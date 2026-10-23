@@ -1,5 +1,6 @@
 package com.example.autoloc.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,9 +26,11 @@ public class Agence {
 
     private String telephone;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "agence")
     private List<Employe> employes = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "agence")
     private List<Vehicle> vehicules = new ArrayList<>();
 }

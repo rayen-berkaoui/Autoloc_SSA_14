@@ -1,5 +1,6 @@
 package com.example.autoloc.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +31,7 @@ public class Client {
 
     private LocalDate dateInscription;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Reservation> reservations = new ArrayList<>();
 }

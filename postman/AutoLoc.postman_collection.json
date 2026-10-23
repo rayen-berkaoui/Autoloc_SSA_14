@@ -1,0 +1,1604 @@
+{
+  "info": {
+    "name": "AutoLoc",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Lancer dans l'ordre (dossiers de haut en bas, puis DELETE). Les ids sont stockés automatiquement par les POST."
+  },
+  "variable": [
+    {
+      "key": "base",
+      "value": "http://localhost:8081/api"
+    },
+    {
+      "key": "idAgence",
+      "value": ""
+    },
+    {
+      "key": "idClient",
+      "value": ""
+    },
+    {
+      "key": "idEmploye",
+      "value": ""
+    },
+    {
+      "key": "idVehicule",
+      "value": ""
+    },
+    {
+      "key": "idEquipement",
+      "value": ""
+    },
+    {
+      "key": "idMaintenance",
+      "value": ""
+    },
+    {
+      "key": "idReservation",
+      "value": ""
+    },
+    {
+      "key": "idContrat",
+      "value": ""
+    },
+    {
+      "key": "idPaiement",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Agence",
+      "item": [
+        {
+          "name": "POST Agence (créer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/agences",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "agences"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Agence Tunis\",\n  \"ville\": \"Tunis\",\n  \"adresse\": \"Av Bourguiba\",\n  \"telephone\": \"71000000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 201', function () { pm.expect(pm.response.code).to.be.oneOf([201]); });",
+                  "pm.collectionVariables.set('idAgence', pm.response.json().idAgence);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Agences (lister)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/agences",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "agences"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Agence par id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/agences/{{idAgence}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "agences",
+                "{{idAgence}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Agence (modifier)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/agences/{{idAgence}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "agences",
+                "{{idAgence}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Agence Sfax\",\n  \"ville\": \"Sfax\",\n  \"adresse\": \"Rue 1\",\n  \"telephone\": \"74000000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Client",
+      "item": [
+        {
+          "name": "POST Client (créer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/clients",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "clients"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Ben Ali\",\n  \"prenom\": \"Ahmed\",\n  \"email\": \"ahmed@mail.com\",\n  \"telephone\": \"20000000\",\n  \"numPermis\": \"P123\",\n  \"dateInscription\": \"2026-01-01\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 201', function () { pm.expect(pm.response.code).to.be.oneOf([201]); });",
+                  "pm.collectionVariables.set('idClient', pm.response.json().idClient);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Clients (lister)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/clients",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "clients"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Client par id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/clients/{{idClient}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "clients",
+                "{{idClient}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Client (modifier)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/clients/{{idClient}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "clients",
+                "{{idClient}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Ben Ali\",\n  \"prenom\": \"Ahmed\",\n  \"email\": \"ahmed.new@mail.com\",\n  \"telephone\": \"20111111\",\n  \"numPermis\": \"P123\",\n  \"dateInscription\": \"2026-01-01\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Employe",
+      "item": [
+        {
+          "name": "POST Employe (créer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/employes",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "employes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Trabelsi\",\n  \"prenom\": \"Sami\",\n  \"role\": \"AGENT\",\n  \"agence\": {\n    \"idAgence\": \"{{idAgence}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 201', function () { pm.expect(pm.response.code).to.be.oneOf([201]); });",
+                  "pm.collectionVariables.set('idEmploye', pm.response.json().idEmploye);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Employes (lister)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/employes",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "employes"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Employe par id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/employes/{{idEmploye}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "employes",
+                "{{idEmploye}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Employe (modifier)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/employes/{{idEmploye}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "employes",
+                "{{idEmploye}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Trabelsi\",\n  \"prenom\": \"Sami\",\n  \"role\": \"MANAGER\",\n  \"agence\": {\n    \"idAgence\": \"{{idAgence}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Vehicle",
+      "item": [
+        {
+          "name": "POST Vehicle (créer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/vehicles",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "vehicles"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"immatriculation\": \"123TUN4567\",\n  \"marque\": \"Kia\",\n  \"modele\": \"Rio\",\n  \"categorie\": \"CITADINE\",\n  \"tarifJournalier\": 50,\n  \"statut\": \"DISPONIBLE\",\n  \"agence\": {\n    \"idAgence\": \"{{idAgence}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 201', function () { pm.expect(pm.response.code).to.be.oneOf([201]); });",
+                  "pm.collectionVariables.set('idVehicule', pm.response.json().idVehicule);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Vehicles (lister)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/vehicles",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "vehicles"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Vehicle par id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/vehicles/{{idVehicule}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "vehicles",
+                "{{idVehicule}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Vehicle (modifier)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/vehicles/{{idVehicule}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "vehicles",
+                "{{idVehicule}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"immatriculation\": \"123TUN4567\",\n  \"marque\": \"Kia\",\n  \"modele\": \"Picanto\",\n  \"categorie\": \"CITADINE\",\n  \"tarifJournalier\": 60,\n  \"statut\": \"DISPONIBLE\",\n  \"agence\": {\n    \"idAgence\": \"{{idAgence}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Equipement",
+      "item": [
+        {
+          "name": "POST Equipement (créer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/equipements",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "equipements"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"libelle\": \"GPS\",\n  \"vehicule\": {\n    \"idVehicule\": \"{{idVehicule}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 201', function () { pm.expect(pm.response.code).to.be.oneOf([201]); });",
+                  "pm.collectionVariables.set('idEquipement', pm.response.json().idEquipement);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Equipements (lister)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/equipements",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "equipements"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Equipement par id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/equipements/{{idEquipement}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "equipements",
+                "{{idEquipement}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Equipement (modifier)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/equipements/{{idEquipement}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "equipements",
+                "{{idEquipement}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"libelle\": \"Siège bébé\",\n  \"vehicule\": {\n    \"idVehicule\": \"{{idVehicule}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Maintenance",
+      "item": [
+        {
+          "name": "POST Maintenance (créer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/maintenances",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "maintenances"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dateDebut\": \"2026-02-01\",\n  \"dateFin\": \"2026-02-02\",\n  \"description\": \"Vidange\",\n  \"vehicule\": {\n    \"idVehicule\": \"{{idVehicule}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 201', function () { pm.expect(pm.response.code).to.be.oneOf([201]); });",
+                  "pm.collectionVariables.set('idMaintenance', pm.response.json().idMaintenance);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Maintenances (lister)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/maintenances",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "maintenances"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Maintenance par id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/maintenances/{{idMaintenance}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "maintenances",
+                "{{idMaintenance}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Maintenance (modifier)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/maintenances/{{idMaintenance}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "maintenances",
+                "{{idMaintenance}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dateDebut\": \"2026-02-01\",\n  \"dateFin\": \"2026-02-03\",\n  \"description\": \"Vidange + freins\",\n  \"vehicule\": {\n    \"idVehicule\": \"{{idVehicule}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Reservation",
+      "item": [
+        {
+          "name": "POST Reservation (créer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/reservations",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "reservations"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dateDebut\": \"2026-03-01\",\n  \"dateFin\": \"2026-03-05\",\n  \"statut\": \"EN_ATTENTE\",\n  \"client\": {\n    \"idClient\": \"{{idClient}}\"\n  },\n  \"vehicule\": {\n    \"idVehicule\": \"{{idVehicule}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 201', function () { pm.expect(pm.response.code).to.be.oneOf([201]); });",
+                  "pm.collectionVariables.set('idReservation', pm.response.json().idReservation);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Reservations (lister)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/reservations",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "reservations"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Reservation par id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/reservations/{{idReservation}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "reservations",
+                "{{idReservation}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Reservation (modifier)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/reservations/{{idReservation}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "reservations",
+                "{{idReservation}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dateDebut\": \"2026-03-01\",\n  \"dateFin\": \"2026-03-06\",\n  \"statut\": \"CONFIRMEE\",\n  \"client\": {\n    \"idClient\": \"{{idClient}}\"\n  },\n  \"vehicule\": {\n    \"idVehicule\": \"{{idVehicule}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Contrat",
+      "item": [
+        {
+          "name": "POST Contrat (créer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/contrats",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "contrats"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dateSignature\": \"2026-03-01\",\n  \"montantTotal\": 200,\n  \"valide\": true,\n  \"reservation\": {\n    \"idReservation\": \"{{idReservation}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 201', function () { pm.expect(pm.response.code).to.be.oneOf([201]); });",
+                  "pm.collectionVariables.set('idContrat', pm.response.json().idContrat);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Contrats (lister)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/contrats",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "contrats"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Contrat par id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/contrats/{{idContrat}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "contrats",
+                "{{idContrat}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Contrat (modifier)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/contrats/{{idContrat}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "contrats",
+                "{{idContrat}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dateSignature\": \"2026-03-01\",\n  \"montantTotal\": 250,\n  \"valide\": true,\n  \"reservation\": {\n    \"idReservation\": \"{{idReservation}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Paiement",
+      "item": [
+        {
+          "name": "POST Paiement (créer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/paiements",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "paiements"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"montant\": 100,\n  \"datePaiement\": \"2026-03-01\",\n  \"modePaiement\": \"CARTE\",\n  \"contrat\": {\n    \"idContrat\": \"{{idContrat}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 201', function () { pm.expect(pm.response.code).to.be.oneOf([201]); });",
+                  "pm.collectionVariables.set('idPaiement', pm.response.json().idPaiement);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Paiements (lister)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/paiements",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "paiements"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Paiement par id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/paiements/{{idPaiement}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "paiements",
+                "{{idPaiement}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Paiement (modifier)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/paiements/{{idPaiement}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "paiements",
+                "{{idPaiement}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"montant\": 120,\n  \"datePaiement\": \"2026-03-02\",\n  \"modePaiement\": \"ESPECES\",\n  \"contrat\": {\n    \"idContrat\": \"{{idContrat}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DELETE (ordre inverse)",
+      "item": [
+        {
+          "name": "DELETE Paiement",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/paiements/{{idPaiement}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "paiements",
+                "{{idPaiement}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 204', function () { pm.expect(pm.response.code).to.be.oneOf([204]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE Contrat",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/contrats/{{idContrat}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "contrats",
+                "{{idContrat}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 204', function () { pm.expect(pm.response.code).to.be.oneOf([204]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE Reservation",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/reservations/{{idReservation}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "reservations",
+                "{{idReservation}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 204', function () { pm.expect(pm.response.code).to.be.oneOf([204]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE Maintenance",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/maintenances/{{idMaintenance}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "maintenances",
+                "{{idMaintenance}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 204', function () { pm.expect(pm.response.code).to.be.oneOf([204]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE Equipement",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/equipements/{{idEquipement}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "equipements",
+                "{{idEquipement}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 204', function () { pm.expect(pm.response.code).to.be.oneOf([204]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE Vehicle",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/vehicles/{{idVehicule}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "vehicles",
+                "{{idVehicule}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 204', function () { pm.expect(pm.response.code).to.be.oneOf([204]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE Employe",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/employes/{{idEmploye}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "employes",
+                "{{idEmploye}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 204', function () { pm.expect(pm.response.code).to.be.oneOf([204]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE Client",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/clients/{{idClient}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "clients",
+                "{{idClient}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 204', function () { pm.expect(pm.response.code).to.be.oneOf([204]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE Agence",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/agences/{{idAgence}}",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "agences",
+                "{{idAgence}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Statut 204', function () { pm.expect(pm.response.code).to.be.oneOf([204]); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

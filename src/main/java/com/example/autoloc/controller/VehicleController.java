@@ -1,47 +1,53 @@
 package com.example.autoloc.controller;
 
-import com.example.autoloc.dto.VehicleDto;
-import com.example.autoloc.entities.enums.StatutVehicule;
-import com.example.autoloc.service.VehicleService;
-import jakarta.validation.Valid;
+import com.example.autoloc.entities.Vehicle;
+import com.example.autoloc.service.IVehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/vehicules")
+@RequestMapping("/api/vehicles")
 @RequiredArgsConstructor
 public class VehicleController {
 
-    private final VehicleService service;
-
-    @GetMapping
-    public List<VehicleDto.Response> findAll(@RequestParam(required = false) StatutVehicule statut,
-                                             @RequestParam(required = false) Long idAgence) {
-        return service.findAll(statut, idAgence);
-    }
-
-    @GetMapping("/{id}")
-    public VehicleDto.Response findById(@PathVariable Long id) {
-        return service.findById(id);
-    }
+    private final IVehicleService vehicleService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public VehicleDto.Response create(@Valid @RequestBody VehicleDto.Request request) {
-        return service.create(request);
+    public Vehicle ajouterVehicle(@RequestBody Vehicle vehicle) {
+        return vehicleService.ajouterVehicle(vehicle);
+    }
+
+    @GetMapping
+    public List<Vehicle> consulterVehicles() {
+        return vehicleService.consulterVehicles();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Vehicle> consulterVehicleById(@PathVariable Long id) {
+        Vehicle vehicle = vehicleService.consulterVehicleById(id);
+        return vehicle == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(vehicle);
     }
 
     @PutMapping("/{id}")
-    public VehicleDto.Response update(@PathVariable Long id, @Valid @RequestBody VehicleDto.Request request) {
-        return service.update(id, request);
+    public ResponseEntity<Vehicle> modifierVehicle(@PathVariable Long id, @RequestBody Vehicle vehicle) {
+        if (vehicleService.consulterVehicleById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        vehicle.setIdVehicule(id);
+        return ResponseEntity.ok(vehicleService.modifierVehicle(vehicle));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> supprimerVehicleById(@PathVariable Long id) {
+        if (vehicleService.consulterVehicleById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        vehicleService.supprimerVehicleById(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,5 +1,7 @@
 package com.example.autoloc.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.example.autoloc.entities.enums.CategorieVehicule;
 
 import com.example.autoloc.entities.enums.StatutVehicule;
@@ -32,6 +34,7 @@ public class Vehicle {
     @Enumerated(EnumType.STRING)
     private StatutVehicule statut;
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "vehicule",
             cascade = CascadeType.ALL,
@@ -39,6 +42,7 @@ public class Vehicle {
     )
     private List<Maintenance> maintenances = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "vehicule",
             cascade = CascadeType.ALL,
@@ -46,9 +50,11 @@ public class Vehicle {
     )
     private List<Equipement> equipements = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "vehicule")
     private List<Reservation> reservations = new ArrayList<>();
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_agence")
     private Agence agence;

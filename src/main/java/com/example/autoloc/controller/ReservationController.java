@@ -1,10 +1,10 @@
 package com.example.autoloc.controller;
 
-import com.example.autoloc.dto.ReservationDto;
-import com.example.autoloc.service.ReservationService;
-import jakarta.validation.Valid;
+import com.example.autoloc.entities.Reservation;
+import com.example.autoloc.service.IReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,39 +14,40 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReservationController {
 
-    private final ReservationService service;
-
-    @GetMapping
-    public List<ReservationDto.Response> findAll(@RequestParam(required = false) Long idClient,
-                                                 @RequestParam(required = false) Long idVehicule) {
-        return service.findAll(idClient, idVehicule);
-    }
-
-    @GetMapping("/{id}")
-    public ReservationDto.Response findById(@PathVariable Long id) {
-        return service.findById(id);
-    }
+    private final IReservationService reservationService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ReservationDto.Response create(@Valid @RequestBody ReservationDto.Request request) {
-        return service.create(request);
+    public Reservation ajouterReservation(@RequestBody Reservation reservation) {
+        return reservationService.ajouterReservation(reservation);
+    }
+
+    @GetMapping
+    public List<Reservation> consulterReservations() {
+        return reservationService.consulterReservations();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Reservation> consulterReservationById(@PathVariable Long id) {
+        Reservation reservation = reservationService.consulterReservationById(id);
+        return reservation == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(reservation);
     }
 
     @PutMapping("/{id}")
-    public ReservationDto.Response update(@PathVariable Long id, @Valid @RequestBody ReservationDto.Request request) {
-        return service.update(id, request);
-    }
-
-    @PatchMapping("/{id}/statut")
-    public ReservationDto.Response changeStatut(@PathVariable Long id,
-                                                @Valid @RequestBody ReservationDto.StatutRequest request) {
-        return service.changeStatut(id, request.statut());
+    public ResponseEntity<Reservation> modifierReservation(@PathVariable Long id, @RequestBody Reservation reservation) {
+        if (reservationService.consulterReservationById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        reservation.setIdReservation(id);
+        return ResponseEntity.ok(reservationService.modifierReservation(reservation));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> supprimerReservationById(@PathVariable Long id) {
+        if (reservationService.consulterReservationById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        reservationService.supprimerReservationById(id);
+        return ResponseEntity.noContent().build();
     }
 }

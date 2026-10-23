@@ -1,10 +1,10 @@
 package com.example.autoloc.controller;
 
-import com.example.autoloc.dto.MaintenanceDto;
-import com.example.autoloc.service.MaintenanceService;
-import jakarta.validation.Valid;
+import com.example.autoloc.entities.Maintenance;
+import com.example.autoloc.service.IMaintenanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,32 +14,40 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MaintenanceController {
 
-    private final MaintenanceService service;
-
-    @GetMapping
-    public List<MaintenanceDto.Response> findAll(@RequestParam(required = false) Long idVehicule) {
-        return service.findAll(idVehicule);
-    }
-
-    @GetMapping("/{id}")
-    public MaintenanceDto.Response findById(@PathVariable Long id) {
-        return service.findById(id);
-    }
+    private final IMaintenanceService maintenanceService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MaintenanceDto.Response create(@Valid @RequestBody MaintenanceDto.Request request) {
-        return service.create(request);
+    public Maintenance ajouterMaintenance(@RequestBody Maintenance maintenance) {
+        return maintenanceService.ajouterMaintenance(maintenance);
+    }
+
+    @GetMapping
+    public List<Maintenance> consulterMaintenances() {
+        return maintenanceService.consulterMaintenances();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Maintenance> consulterMaintenanceById(@PathVariable Long id) {
+        Maintenance maintenance = maintenanceService.consulterMaintenanceById(id);
+        return maintenance == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(maintenance);
     }
 
     @PutMapping("/{id}")
-    public MaintenanceDto.Response update(@PathVariable Long id, @Valid @RequestBody MaintenanceDto.Request request) {
-        return service.update(id, request);
+    public ResponseEntity<Maintenance> modifierMaintenance(@PathVariable Long id, @RequestBody Maintenance maintenance) {
+        if (maintenanceService.consulterMaintenanceById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        maintenance.setIdMaintenance(id);
+        return ResponseEntity.ok(maintenanceService.modifierMaintenance(maintenance));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> supprimerMaintenanceById(@PathVariable Long id) {
+        if (maintenanceService.consulterMaintenanceById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        maintenanceService.supprimerMaintenanceById(id);
+        return ResponseEntity.noContent().build();
     }
 }

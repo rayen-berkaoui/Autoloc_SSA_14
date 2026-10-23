@@ -1,10 +1,10 @@
 package com.example.autoloc.controller;
 
-import com.example.autoloc.dto.EmployeDto;
-import com.example.autoloc.service.EmployeService;
-import jakarta.validation.Valid;
+import com.example.autoloc.entities.Employe;
+import com.example.autoloc.service.IEmployeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,32 +14,40 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeController {
 
-    private final EmployeService service;
-
-    @GetMapping
-    public List<EmployeDto.Response> findAll(@RequestParam(required = false) Long idAgence) {
-        return service.findAll(idAgence);
-    }
-
-    @GetMapping("/{id}")
-    public EmployeDto.Response findById(@PathVariable Long id) {
-        return service.findById(id);
-    }
+    private final IEmployeService employeService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EmployeDto.Response create(@Valid @RequestBody EmployeDto.Request request) {
-        return service.create(request);
+    public Employe ajouterEmploye(@RequestBody Employe employe) {
+        return employeService.ajouterEmploye(employe);
+    }
+
+    @GetMapping
+    public List<Employe> consulterEmployes() {
+        return employeService.consulterEmployes();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Employe> consulterEmployeById(@PathVariable Long id) {
+        Employe employe = employeService.consulterEmployeById(id);
+        return employe == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(employe);
     }
 
     @PutMapping("/{id}")
-    public EmployeDto.Response update(@PathVariable Long id, @Valid @RequestBody EmployeDto.Request request) {
-        return service.update(id, request);
+    public ResponseEntity<Employe> modifierEmploye(@PathVariable Long id, @RequestBody Employe employe) {
+        if (employeService.consulterEmployeById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        employe.setIdEmploye(id);
+        return ResponseEntity.ok(employeService.modifierEmploye(employe));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> supprimerEmployeById(@PathVariable Long id) {
+        if (employeService.consulterEmployeById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        employeService.supprimerEmployeById(id);
+        return ResponseEntity.noContent().build();
     }
 }

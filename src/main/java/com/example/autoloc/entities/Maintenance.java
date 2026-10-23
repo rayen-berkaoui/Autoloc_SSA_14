@@ -1,4 +1,6 @@
 package com.example.autoloc.entities;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
@@ -16,6 +18,7 @@ public class Maintenance {
 
     private String description;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_vehicule", nullable = false)
     private Vehicle vehicule;

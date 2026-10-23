@@ -1,10 +1,10 @@
 package com.example.autoloc.controller;
 
-import com.example.autoloc.dto.AgenceDto;
-import com.example.autoloc.service.AgenceService;
-import jakarta.validation.Valid;
+import com.example.autoloc.entities.Agence;
+import com.example.autoloc.service.IAgenceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,32 +14,40 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AgenceController {
 
-    private final AgenceService service;
-
-    @GetMapping
-    public List<AgenceDto.Response> findAll() {
-        return service.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public AgenceDto.Response findById(@PathVariable Long id) {
-        return service.findById(id);
-    }
+    private final IAgenceService agenceService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AgenceDto.Response create(@Valid @RequestBody AgenceDto.Request request) {
-        return service.create(request);
+    public Agence ajouterAgence(@RequestBody Agence agence) {
+        return agenceService.ajouterAgence(agence);
+    }
+
+    @GetMapping
+    public List<Agence> consulterAgences() {
+        return agenceService.consulterAgences();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Agence> consulterAgenceById(@PathVariable Long id) {
+        Agence agence = agenceService.consulterAgenceById(id);
+        return agence == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(agence);
     }
 
     @PutMapping("/{id}")
-    public AgenceDto.Response update(@PathVariable Long id, @Valid @RequestBody AgenceDto.Request request) {
-        return service.update(id, request);
+    public ResponseEntity<Agence> modifierAgence(@PathVariable Long id, @RequestBody Agence agence) {
+        if (agenceService.consulterAgenceById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        agence.setIdAgence(id);
+        return ResponseEntity.ok(agenceService.modifierAgence(agence));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> supprimerAgenceById(@PathVariable Long id) {
+        if (agenceService.consulterAgenceById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        agenceService.supprimerAgenceById(id);
+        return ResponseEntity.noContent().build();
     }
 }

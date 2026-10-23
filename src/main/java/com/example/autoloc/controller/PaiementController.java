@@ -1,10 +1,10 @@
 package com.example.autoloc.controller;
 
-import com.example.autoloc.dto.PaiementDto;
-import com.example.autoloc.service.PaiementService;
-import jakarta.validation.Valid;
+import com.example.autoloc.entities.Paiement;
+import com.example.autoloc.service.IPaiementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,27 +14,40 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PaiementController {
 
-    private final PaiementService service;
-
-    @GetMapping
-    public List<PaiementDto.Response> findAll(@RequestParam(required = false) Long idContrat) {
-        return service.findAll(idContrat);
-    }
-
-    @GetMapping("/{id}")
-    public PaiementDto.Response findById(@PathVariable Long id) {
-        return service.findById(id);
-    }
+    private final IPaiementService paiementService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PaiementDto.Response create(@Valid @RequestBody PaiementDto.Request request) {
-        return service.create(request);
+    public Paiement ajouterPaiement(@RequestBody Paiement paiement) {
+        return paiementService.ajouterPaiement(paiement);
+    }
+
+    @GetMapping
+    public List<Paiement> consulterPaiements() {
+        return paiementService.consulterPaiements();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Paiement> consulterPaiementById(@PathVariable Long id) {
+        Paiement paiement = paiementService.consulterPaiementById(id);
+        return paiement == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(paiement);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Paiement> modifierPaiement(@PathVariable Long id, @RequestBody Paiement paiement) {
+        if (paiementService.consulterPaiementById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        paiement.setIdPaiement(id);
+        return ResponseEntity.ok(paiementService.modifierPaiement(paiement));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> supprimerPaiementById(@PathVariable Long id) {
+        if (paiementService.consulterPaiementById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        paiementService.supprimerPaiementById(id);
+        return ResponseEntity.noContent().build();
     }
 }

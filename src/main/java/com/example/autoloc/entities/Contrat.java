@@ -1,5 +1,7 @@
 package com.example.autoloc.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,11 +27,12 @@ public class Contrat {
 
     private boolean valide;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_reservation", nullable = false, unique = true)
     private Reservation reservation;
 
-    // Composition: a Paiement cannot exist without its Contrat
+    @JsonIgnore
     @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Paiement> paiements = new ArrayList<>();
 }

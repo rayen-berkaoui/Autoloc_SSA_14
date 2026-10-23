@@ -1,10 +1,10 @@
 package com.example.autoloc.controller;
 
-import com.example.autoloc.dto.ContratDto;
-import com.example.autoloc.service.ContratService;
-import jakarta.validation.Valid;
+import com.example.autoloc.entities.Contrat;
+import com.example.autoloc.service.IContratService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,32 +14,40 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ContratController {
 
-    private final ContratService service;
-
-    @GetMapping
-    public List<ContratDto.Response> findAll() {
-        return service.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public ContratDto.Response findById(@PathVariable Long id) {
-        return service.findById(id);
-    }
+    private final IContratService contratService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ContratDto.Response create(@Valid @RequestBody ContratDto.Request request) {
-        return service.create(request);
+    public Contrat ajouterContrat(@RequestBody Contrat contrat) {
+        return contratService.ajouterContrat(contrat);
     }
 
-    @PatchMapping("/{id}/invalider")
-    public ContratDto.Response invalider(@PathVariable Long id) {
-        return service.invalider(id);
+    @GetMapping
+    public List<Contrat> consulterContrats() {
+        return contratService.consulterContrats();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Contrat> consulterContratById(@PathVariable Long id) {
+        Contrat contrat = contratService.consulterContratById(id);
+        return contrat == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(contrat);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Contrat> modifierContrat(@PathVariable Long id, @RequestBody Contrat contrat) {
+        if (contratService.consulterContratById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        contrat.setIdContrat(id);
+        return ResponseEntity.ok(contratService.modifierContrat(contrat));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> supprimerContratById(@PathVariable Long id) {
+        if (contratService.consulterContratById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        contratService.supprimerContratById(id);
+        return ResponseEntity.noContent().build();
     }
 }

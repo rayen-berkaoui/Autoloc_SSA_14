@@ -1,5 +1,6 @@
 package com.example.autoloc.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.example.autoloc.entities.enums.ModePaiement;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,6 +26,7 @@ public class Paiement {
     @Enumerated(EnumType.STRING)
     private ModePaiement modePaiement;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_contrat", nullable = false)
     private Contrat contrat;
